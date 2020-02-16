@@ -1,6 +1,5 @@
 import os
-from ..common import ezlog as ezlog 
-
+import common.ezlog as ezlog
 
 logger = ezlog.get_logger()
 
