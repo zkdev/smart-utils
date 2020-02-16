@@ -2,9 +2,8 @@ import requests
 import os
 import json
 import sys
-import config
+from . import config, args
 import common.ezlog as ezlog
-import args
 from bs4 import BeautifulSoup
 
 

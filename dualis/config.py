@@ -1,5 +1,5 @@
 import pathlib as pl
-import args
+from . import args
 
 
 LOGIN_URL = "https://dualis.dhbw.de/scripts/mgrqispi.dll"
