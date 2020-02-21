@@ -1,5 +1,4 @@
 import pathlib as pl
-from . import args
 
 
 LOGIN_URL = "https://dualis.dhbw.de/scripts/mgrqispi.dll"
@@ -20,7 +19,7 @@ CACHE_PATH = '{}/dualis/.cache'.format(ROOT_PATH)
 RESOURCE_GRADES = '{}/grades.json'.format(CACHE_PATH)
 
 
-def prepare_login():
-    global LOGIN_FORM
-    LOGIN_FORM['usrname'] = args.args['username']
-    LOGIN_FORM['pass'] = args.args['password']
+def get_login_form(username=None, password=None):
+    LOGIN_FORM['usrname'] = username
+    LOGIN_FORM['pass'] = password
+    return LOGIN_FORM

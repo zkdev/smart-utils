@@ -10,19 +10,19 @@ from bs4 import BeautifulSoup
 logger = ezlog.get_logger()
 
 
-def run():
-    s = get_session()
-    gs = get_grades(s)
-    compare_cache(gs)
-    cache(gs)
+def run(username=None, password=None):
+    s = _get_session(username=username, password=password)
+    gs = _get_grades(s)
+    _compare_cache(gs)
+    _cache(gs)
     logger.info('finished')
     sys.exit(0)
 
 
-def get_session():
+def _get_session(username=None, password=None):
     logger.info('getting session')
-    config.prepare_login()
-    r = requests.post(config.LOGIN_URL, data=config.LOGIN_FORM)
+    f = config.get_login_form(username=username, password=password)
+    r = requests.post(url=config.LOGIN_URL, data=f)
     if r.text.__contains__('Benutzername oder Passwort falsch'):
         logger.error('credentials rejected')
         sys.exit(1)
@@ -33,7 +33,7 @@ def get_session():
     return {'c': c, 'p': p}
 
 
-def get_grades(d):
+def _get_grades(d):
     logger.info('getting grades')
     r = requests.get(config.GRADE_URL.format(d['p']), headers={'cookie': d['c']})
     logger.info('parsing grades')
@@ -58,7 +58,7 @@ def get_grades(d):
     return gs
 
 
-def compare_cache(gs):
+def _compare_cache(gs):
     # check if old grade file exists
     if os.path.isfile(config.RESOURCE_GRADES):
         # load cached grades
@@ -78,7 +78,7 @@ def compare_cache(gs):
         logger.info('no cached grades found')
 
 
-def cache(gs):
+def _cache(gs):
     logger.info('caching grades')
     try:
         os.mkdir(config.CACHE_PATH)
@@ -90,5 +90,5 @@ def cache(gs):
 
 
 if __name__ == '__main__':
-    args.read(sys.argv)
-    run()
+    argv = args.get()
+    run(username=argv.username, password=argv.password)

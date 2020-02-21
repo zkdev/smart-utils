@@ -1,13 +1,9 @@
-args = {
-    "username": None,
-    "password": None
-}
+import argparse
 
 
-def read(argv):
-    global args
-    for i in range(len(argv)):
-        if argv[i] == '--username' or argv[i] == '-u':
-            args['username'] = argv[i + 1]
-        elif argv[i] == '--password' or argv[i] == '-p':
-            args['password'] = argv[i + 1]
+def get():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--username', action='append')
+    parser.add_argument('--password', action='store')
+    argv = parser.parse_args()
+    return argv
